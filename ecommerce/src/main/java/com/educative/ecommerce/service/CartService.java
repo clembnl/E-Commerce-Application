@@ -2,6 +2,7 @@ package com.educative.ecommerce.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.educative.ecommerce.dto.cart.AddToCartDto;
 import com.educative.ecommerce.dto.cart.CartDto;
 import com.educative.ecommerce.dto.cart.CartItemDto;
+import com.educative.ecommerce.exception.CartItemNotExistException;
 import com.educative.ecommerce.model.Cart;
 import com.educative.ecommerce.model.Product;
 import com.educative.ecommerce.model.User;
@@ -44,6 +46,29 @@ public class CartService {
 
         // return cart DTO
         return new CartDto(cartItems,totalCost);
+    }
+    
+    public void deleteCartItem(int cartItemId, User user) throws CartItemNotExistException {
+        //TODO
+
+        // first check if cartItemId is valid else throw an CartItemNotExistException
+
+        Optional<Cart> optionalCart = cartRepository.findById(cartItemId);
+
+        if (!optionalCart.isPresent()) {
+            throw new CartItemNotExistException("cartItemId not valid");
+        }
+
+        // next check if the cartItem belongs to the user else throw CartItemNotExistException exception
+
+        Cart cart = optionalCart.get();
+
+        if (cart.getUser() != user) {
+            throw new CartItemNotExistException("cart item does not belong to user");
+        }
+
+        cartRepository.deleteById(cartItemId);
+        // delete the cart item
     }
 
 }

@@ -3,7 +3,9 @@ package com.educative.ecommerce.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.educative.ecommerce.dto.cart.AddToCartDto;
 import com.educative.ecommerce.dto.cart.CartDto;
 import com.educative.ecommerce.exception.AuthenticationFailException;
+import com.educative.ecommerce.exception.CartItemNotExistException;
 import com.educative.ecommerce.exception.ProductNotExistException;
 import com.educative.ecommerce.model.Product;
 import com.educative.ecommerce.model.User;
@@ -63,6 +66,18 @@ public class CartController {
         CartDto cartDto = cartService.listCartItems(user);
 
         return new ResponseEntity<CartDto>(cartDto,HttpStatus.OK);
+    }
+    
+    // task delete cart item
+    @DeleteMapping("/delete/{cartItemId}")
+    public ResponseEntity<ApiResponse> deleteCartItem(@PathVariable("cartItemId") int cartItemId,
+                                                      @RequestParam("token") String token)
+            throws AuthenticationFailException, CartItemNotExistException {
+        authenticationService.authenticate(token);
+        User user = authenticationService.getUser(token);
+        // method to be completed
+        cartService.deleteCartItem(cartItemId, user);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Item has been removed"), HttpStatus.OK);
     }
 
 }
