@@ -70,5 +70,9 @@ public class CartService {
         cartRepository.deleteById(cartItemId);
         // delete the cart item
     }
+    
+    public void deleteUserCartItems(User user) {
+        cartRepository.deleteByUser(user);
+    }
 
 }
