@@ -1,7 +1,6 @@
 package com.educative.ecommerce.dto.user;
 
 public class SignUpDto {
-	
     private String firstName;
     private String lastName;
     private String email;
@@ -38,5 +37,4 @@ public class SignUpDto {
     public void setPassword(String password) {
         this.password = password;
     }
-
 }

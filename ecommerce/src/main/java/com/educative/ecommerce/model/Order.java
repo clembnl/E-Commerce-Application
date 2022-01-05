@@ -19,10 +19,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name="orders")
 public class Order {
-	
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
 
     @Column(name = "created_date")
     private Date createdDate;
@@ -43,6 +44,7 @@ public class Order {
 
     public Order() {
     }
+
 
     public List<OrderItem> getOrderItems() {
         return orderItems;
@@ -92,5 +94,4 @@ public class Order {
     public void setUser(User user) {
         this.user = user;
     }
-
 }

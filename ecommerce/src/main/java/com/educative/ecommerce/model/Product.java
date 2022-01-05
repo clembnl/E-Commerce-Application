@@ -1,5 +1,7 @@
 package com.educative.ecommerce.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -7,15 +9,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.educative.ecommerce.dto.product.ProductDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "products")
 public class Product {
-	
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +34,26 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false)
     Category category;
 
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    private List<WishList> wishListList;
+
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    private List<Cart> carts;
+
+
+
+
+
+    public Product(ProductDto productDto, Category category) {
+        this.name = productDto.getName();
+        this.imageURL = productDto.getImageURL();
+        this.description = productDto.getDescription();
+        this.price = productDto.getPrice();
+        this.category = category;
+    }
 
     public Product(String name, String imageURL, double price, String description, Category category) {
         super();
@@ -40,67 +63,66 @@ public class Product {
         this.description = description;
         this.category = category;
     }
-    
+
     public Product() {
     }
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getImageURL() {
+        return imageURL;
+    }
 
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public double getPrice() {
+        return price;
+    }
 
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
-	public String getImageURL() {
-		return imageURL;
-	}
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setImageURL(String imageURL) {
-		this.imageURL = imageURL;
-	}
+    public Category getCategory() {
+        return category;
+    }
 
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
-	public double getPrice() {
-		return price;
-	}
-
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-
-	public String getDescription() {
-		return description;
-	}
-
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-
-	public Category getCategory() {
-		return category;
-	}
-
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", imageURL='" + imageURL + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

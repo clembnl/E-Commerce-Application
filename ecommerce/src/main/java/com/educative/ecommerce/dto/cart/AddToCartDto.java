@@ -3,14 +3,14 @@ package com.educative.ecommerce.dto.cart;
 import javax.validation.constraints.NotNull;
 
 public class AddToCartDto {
-	
     private Integer id;
     private @NotNull Integer productId;
     private @NotNull Integer quantity;
 
-
     public AddToCartDto() {
     }
+
+
 
     @Override
     public String toString() {
@@ -29,6 +29,7 @@ public class AddToCartDto {
         this.id = id;
     }
 
+
     public Integer getProductId() {
         return productId;
     }
@@ -44,5 +45,4 @@ public class AddToCartDto {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-
 }

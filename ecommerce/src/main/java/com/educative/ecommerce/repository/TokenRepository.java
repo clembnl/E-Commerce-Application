@@ -8,8 +8,6 @@ import com.educative.ecommerce.model.User;
 
 @Repository
 public interface TokenRepository extends JpaRepository<AuthenticationToken, Integer> {
-	
     AuthenticationToken findTokenByUser(User user);
     AuthenticationToken findTokenByToken(String token);
-
 }

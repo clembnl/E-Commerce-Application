@@ -1,5 +1,16 @@
 package com.educative.ecommerce.service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import com.educative.ecommerce.dto.cart.CartDto;
 import com.educative.ecommerce.dto.cart.CartItemDto;
 import com.educative.ecommerce.dto.checkout.CheckoutItemDto;
@@ -13,21 +24,11 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
-import org.aspectj.weaver.ast.Or;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 public class OrderService {
-	
+
     @Autowired
     private CartService cartService;
 
@@ -35,7 +36,7 @@ public class OrderService {
     OrderRepository orderRepository;
 
     @Autowired
-    OrderItemRepository orderItemsRepository;
+    OrderItemRepository orderItemRepository;
 
     @Value("${BASE_URL}")
     private String baseURL;
@@ -116,7 +117,7 @@ public class OrderService {
             orderItem.setQuantity(cartItemDto.getQuantity());
             orderItem.setOrder(newOrder);
             // add to order item list
-            orderItemsRepository.save(orderItem);
+            orderItemRepository.save(orderItem);
         }
         //
         cartService.deleteUserCartItems(user);
@@ -126,30 +127,12 @@ public class OrderService {
         return orderRepository.findAllByUserOrderByCreatedDateDesc(user);
     }
 
-    // find the order by id, validate if the order belong to user and return
-    public Order getOrder(Integer orderId, User user) throws OrderNotFoundException {
-        // 1. validate the order
-        // if the order not valid throw exception
 
-        Optional<Order> optionalOrder = orderRepository.findById(orderId);
-
-        if (optionalOrder.isEmpty()) {
-            /// throw exception
-            throw  new OrderNotFoundException("order id is not valid");
+    public Order getOrder(Integer orderId) throws OrderNotFoundException {
+        Optional<Order> order = orderRepository.findById(orderId);
+        if (order.isPresent()) {
+            return order.get();
         }
-
-        // check if the order belongs to user
-
-        Order order = optionalOrder.get();
-
-        if(order.getUser() != user) {
-            // else throw OrderNotFoundException
-            throw  new OrderNotFoundException("order does not belong to user");
-        }
-
-        // return the order
-
-        return  order;
+        throw new OrderNotFoundException("Order not found");
     }
-
 }

@@ -9,8 +9,7 @@ import com.educative.ecommerce.model.Order;
 import com.educative.ecommerce.model.User;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Integer> {
-	
-	List<Order> findAllByUserOrderByCreatedDateDesc(User user);
+public interface OrderRepository  extends JpaRepository<Order, Integer> {
+    List<Order> findAllByUserOrderByCreatedDateDesc(User user);
 
 }

@@ -16,10 +16,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "wishlist")
 public class WishList {
-	
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
@@ -73,5 +75,4 @@ public class WishList {
     public void setProduct(Product product) {
         this.product = product;
     }
-
 }

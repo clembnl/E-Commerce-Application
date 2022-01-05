@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -17,16 +18,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "orderitems")
 public class OrderItem {
-	
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
 
     @Column(name = "quantity")
     private @NotNull int quantity;
 
     @Column(name = "price")
     private @NotNull double price;
+
 
     @Column(name = "created_date")
     private Date createdDate;
@@ -36,7 +39,7 @@ public class OrderItem {
     @JoinColumn(name = "order_id", referencedColumnName = "id")
     private Order order;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
@@ -90,5 +93,4 @@ public class OrderItem {
     public void setOrder(Order order) {
         this.order = order;
     }
-
 }
