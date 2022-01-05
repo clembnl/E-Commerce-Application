@@ -1,9 +1,13 @@
 package com.educative.ecommerce.dto.user;
 
-public class SignUpDto {
+import com.educative.ecommerce.model.Role;
+
+public class UserCreateDto {
+
     private String firstName;
     private String lastName;
     private String email;
+    private Role role;
     private String password;
 
     public String getFirstName() {
@@ -28,6 +32,14 @@ public class SignUpDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getPassword() {

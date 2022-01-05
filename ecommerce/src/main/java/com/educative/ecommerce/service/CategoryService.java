@@ -3,18 +3,23 @@ package com.educative.ecommerce.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.educative.ecommerce.model.Category;
 import com.educative.ecommerce.repository.CategoryRepository;
 
 @Service
+@Transactional
 public class CategoryService {
-	
-	@Autowired
-	private CategoryRepository categoryRepository;
-	
+
+	private final CategoryRepository categoryRepository;
+
+	public CategoryService(CategoryRepository categoryRepository) {
+		this.categoryRepository = categoryRepository;
+	}
+
 	public List<Category> listCategories() {
 		return categoryRepository.findAll();
 	}
@@ -35,8 +40,9 @@ public class CategoryService {
 		Category category = categoryRepository.findById(categoryID).get();
 		category.setCategoryName(newCategory.getCategoryName());
 		category.setDescription(newCategory.getDescription());
+		category.setProducts(newCategory.getProducts());
 		category.setImageUrl(newCategory.getImageUrl());
+
 		categoryRepository.save(category);
 	}
-
 }

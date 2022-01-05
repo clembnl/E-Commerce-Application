@@ -1,7 +1,6 @@
 package com.educative.ecommerce.dto.user;
 
 public class SignInResponseDto {
-	
     private String status;
     private String token;
 
@@ -25,5 +24,4 @@ public class SignInResponseDto {
         this.status = status;
         this.token = token;
     }
-
 }

@@ -1,7 +1,6 @@
-package com.educative.ecommerce.dto.user;
+package com.educative.ecommerce.dto;
 
-public class SignUpResponseDto {
-	
+public class ResponseDto {
     private String status;
     private String message;
 
@@ -21,9 +20,8 @@ public class SignUpResponseDto {
         this.message = message;
     }
 
-    public SignUpResponseDto(String status, String message) {
+    public ResponseDto(String status, String message) {
         this.status = status;
         this.message = message;
     }
-
 }

@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 
+    @ExceptionHandler(value = UpdateFailException.class)
+    public final ResponseEntity<String> handleUpdateFailException(UpdateFailException exception){
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = AuthenticationFailException.class)
+    public final ResponseEntity<String> handleUpdateFailException(AuthenticationFailException exception){
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(value = CustomException.class)
     public final ResponseEntity<String> handleUpdateFailException(CustomException exception){
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
-    
-    @ExceptionHandler(value = ProductNotExistException.class)
-    public final ResponseEntity<String> handleUpdateFailException(ProductNotExistException exception){
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-    }
 
-
-    @ExceptionHandler(value = OrderNotFoundException.class)
-    public final ResponseEntity<String> handleUpdateFailException(OrderNotFoundException exception){
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-    }
 }

@@ -1,17 +1,8 @@
 
 package com.educative.ecommerce.controller;
 
-import com.educative.ecommerce.dto.checkout.CheckoutItemDto;
-import com.educative.ecommerce.dto.checkout.StripeResponse;
-import com.educative.ecommerce.exception.AuthenticationFailException;
-import com.educative.ecommerce.exception.OrderNotFoundException;
-import com.educative.ecommerce.exception.ProductNotExistException;
-import com.educative.ecommerce.model.Order;
-import com.educative.ecommerce.model.User;
-import com.educative.ecommerce.service.AuthenticationService;
-import com.educative.ecommerce.service.OrderService;
-import com.stripe.exception.StripeException;
-import com.stripe.model.checkout.Session;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +14,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.educative.ecommerce.dto.checkout.CheckoutItemDto;
+import com.educative.ecommerce.dto.checkout.StripeResponse;
+import com.educative.ecommerce.exception.AuthenticationFailException;
+import com.educative.ecommerce.exception.OrderNotFoundException;
+import com.educative.ecommerce.model.Order;
+import com.educative.ecommerce.model.User;
+import com.educative.ecommerce.service.AuthenticationService;
+import com.educative.ecommerce.service.OrderService;
+import com.stripe.exception.StripeException;
+import com.stripe.model.checkout.Session;
 
 @RestController
 @RequestMapping("/order")
 public class OrderController {
-	
     @Autowired
     private OrderService orderService;
 
@@ -76,25 +75,16 @@ public class OrderController {
     // get orderitems for an order
     @GetMapping("/{id}")
     public ResponseEntity<Object> getOrderById(@PathVariable("id") Integer id, @RequestParam("token") String token)
-            throws AuthenticationFailException, OrderNotFoundException {
-        // 1. validate token
-
+            throws AuthenticationFailException {
         // validate token
         authenticationService.authenticate(token);
-
-        // 2. find user
-
-        // retrieve user
-        User user = authenticationService.getUser(token);
-
-
-        // 3. call getOrder method of order service an pass orderId and user
-
-        Order order = orderService.getOrder(id, user);
-
-        // 4. display order in json response
-
-        return new ResponseEntity<>(order, HttpStatus.OK);
+        try {
+            Order order = orderService.getOrder(id);
+            return new ResponseEntity<>(order,HttpStatus.OK);
+        }
+        catch (OrderNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }
 
     }
 

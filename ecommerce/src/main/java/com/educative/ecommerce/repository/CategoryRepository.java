@@ -7,7 +7,7 @@ import com.educative.ecommerce.model.Category;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
-	
+
 	Category findByCategoryName(String categoryName);
 
 }

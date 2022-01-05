@@ -1,28 +1,39 @@
 package com.educative.ecommerce.model;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "categories")
 public class Category {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(name = "categorie_name")
+
+	@Column(name = "category_name")
 	private @NotBlank String categoryName;
-	
+
 	private @NotBlank String description;
-	
+
 	private @NotBlank String imageUrl;
-	
+
+	// add imageURL here
+
+	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY,
+			cascade = CascadeType.ALL)
+	Set<Product> products;
+
 	public Category() {
 	}
 
@@ -37,16 +48,8 @@ public class Category {
 		this.imageUrl = imageUrl;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public String getCategoryName() {
-		return categoryName;
+		return this.categoryName;
 	}
 
 	public void setCategoryName(String categoryName) {
@@ -61,6 +64,19 @@ public class Category {
 		this.description = description;
 	}
 
+	public Set<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Set<Product> products) {
+		this.products = products;
+	}
+
+	@Override
+	public String toString() {
+		return "User {category id=" + id + ", category name='" + categoryName + "', description='" + description + "'}";
+	}
+
 	public String getImageUrl() {
 		return imageUrl;
 	}
@@ -69,11 +85,11 @@ public class Category {
 		this.imageUrl = imageUrl;
 	}
 
-	@Override
-	public String toString() {
-		return "Category [id=" + id + ", categoryName=" + categoryName + ", description=" + description + "]";
+	public Integer getId() {
+		return id;
 	}
-	
-	
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
 }

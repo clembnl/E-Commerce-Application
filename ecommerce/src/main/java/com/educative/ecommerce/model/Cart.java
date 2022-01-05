@@ -10,26 +10,32 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="cart")
 public class Cart {
-	
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
 
     @Column(name = "created_date")
     private Date createdDate;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
+
 
     private int quantity;
 
@@ -51,6 +57,14 @@ public class Cart {
         this.id = id;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -67,14 +81,6 @@ public class Cart {
         this.product = product;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public int getQuantity() {
         return quantity;
     }
@@ -82,5 +88,4 @@ public class Cart {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
 }

@@ -1,10 +1,21 @@
 package com.educative.ecommerce.dto.user;
 
-public class SignUpDto {
+import com.educative.ecommerce.model.Role;
+
+public class UserUpdateDto {
+    // skipping updating passord as of now
+    private Integer id;
     private String firstName;
     private String lastName;
-    private String email;
-    private String password;
+    private Role role;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -22,19 +33,11 @@ public class SignUpDto {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public Role getRole() {
+        return role;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

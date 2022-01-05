@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.educative.ecommerce.dto.ProductDto;
+import com.educative.ecommerce.dto.product.ProductDto;
 import com.educative.ecommerce.model.Category;
 import com.educative.ecommerce.service.CategoryService;
 import com.educative.ecommerce.service.ProductService;
@@ -23,13 +23,17 @@ import com.educative.ecommerce.service.ProductService;
 @RestController
 @RequestMapping("/product")
 public class ProductController {
-	
-	@Autowired
-	private ProductService productService;
-	@Autowired
-	private CategoryService categoryService;
-	
-	@PostMapping("/add")
+    @Autowired ProductService productService;
+    @Autowired
+    CategoryService categoryService;
+
+    @GetMapping("/")
+    public ResponseEntity<List<ProductDto>> getProducts() {
+        List<ProductDto> body = productService.listProducts();
+        return new ResponseEntity<List<ProductDto>>(body, HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
     public ResponseEntity<ApiResponse> addProduct(@RequestBody ProductDto productDto) {
         Optional<Category> optionalCategory = categoryService.readCategory(productDto.getCategoryId());
         if (!optionalCategory.isPresent()) {
@@ -37,27 +41,17 @@ public class ProductController {
         }
         Category category = optionalCategory.get();
         productService.addProduct(productDto, category);
-        return new ResponseEntity<>(new ApiResponse(true, "Product has been added"), HttpStatus.CREATED);
-    }
-	
-    // list all the products
-    @GetMapping("/")
-    public ResponseEntity<List<ProductDto>> getProducts() {
-        List<ProductDto> productDtos = productService.listProducts();
-        return new ResponseEntity<>(productDtos, HttpStatus.OK);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Product has been added"), HttpStatus.CREATED);
     }
 
-    // update a product
     @PostMapping("/update/{productID}")
-    public ResponseEntity<ApiResponse> updateProduct(@PathVariable("productID") Integer productID,
-                                                     @RequestBody @Valid ProductDto productDto) {
+    public ResponseEntity<ApiResponse> updateProduct(@PathVariable("productID") Integer productID, @RequestBody @Valid ProductDto productDto) {
         Optional<Category> optionalCategory = categoryService.readCategory(productDto.getCategoryId());
         if (!optionalCategory.isPresent()) {
             return new ResponseEntity<ApiResponse>(new ApiResponse(false, "category is invalid"), HttpStatus.CONFLICT);
         }
         Category category = optionalCategory.get();
         productService.updateProduct(productID, productDto, category);
-        return new ResponseEntity<>(new ApiResponse(true, "Product has been updated"), HttpStatus.OK);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Product has been updated"), HttpStatus.OK);
     }
-
 }

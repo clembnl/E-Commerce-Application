@@ -16,11 +16,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tokens")
 public class AuthenticationToken {
-	
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+
 
     private String token;
 
@@ -69,8 +70,13 @@ public class AuthenticationToken {
         this.user = user;
     }
 
+    public AuthenticationToken(Integer id, String Token, Date createdDate, User user) {
+        this.id = id;
+        this.token = Token;
+        this.createdDate = createdDate;
+        this.user = user;
+    }
 
     public AuthenticationToken() {
     }
-
 }
