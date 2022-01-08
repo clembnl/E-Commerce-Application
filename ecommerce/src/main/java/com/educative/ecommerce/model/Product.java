@@ -2,6 +2,7 @@ package com.educative.ecommerce.model;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,7 +26,10 @@ public class Product {
     private Integer id;
 
     private @NotNull String name;
+    
+    @Column(name = "image_url")
     private @NotNull String imageURL;
+    
     private @NotNull double price;
     private @NotNull String description;
 
